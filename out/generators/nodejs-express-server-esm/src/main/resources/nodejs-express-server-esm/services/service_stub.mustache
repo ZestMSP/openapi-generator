@@ -1,0 +1,47 @@
+/* eslint-disable no-unused-vars */
+import Service from './Service.js'
+
+import * as {api_import} from '../{apipath}/index.js'
+
+{{#operations}}
+{{#operation}}
+/**
+{{#summary}}
+* {{{summary}}}
+{{/summary}}
+{{#notes}}
+* {{{notes}}}
+{{/notes}}
+*
+{{#allParams}}
+* {{paramName}} {{{dataType}}} {{{description}}}{{^required}} (optional){{/required}}
+{{/allParams}}
+{{^returnType}}
+* no response value expected for this operation
+{{/returnType}}
+{{#returnType}}
+* returns {{{returnType}}}
+{{/returnType}}
+* */
+export const {{{operationId}}} = ({{#allParams}}{{#-first}}{ {{/-first}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{#-last}} }{{/-last}}{{/allParams}}) => new Promise(
+  /* Should this be async??? */
+  async (resolve, reject) => {
+    try {
+      let params = {
+        {{#allParams}}
+        {{paramName}},
+        {{/allParams}}
+      }
+      let response = await peiapi.{{operationId}}(params)
+      resolve(response)
+    } catch (e) {
+      reject({
+        payload: e.message || e.status || 'Invalid API Service Input',
+        code: e.status || e.code || 405
+      })
+    }
+  },
+)
+{{/operation}}
+{{/operations}}
+

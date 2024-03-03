@@ -1,0 +1,32 @@
+import {join} from 'path'
+
+let timeout = parseInt(process.env.BACKEND_TIMEOUT || 300000)
+let port = parseInt(process.env.URL_PORT || process.env.PORT || 3000)
+import * as url from 'url'
+const __filename = url.fileURLToPath(import.meta.url)
+export const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
+
+const config = {
+  VERSION: process.env.API_VERSION || 'Version0',
+  ROOT_DIR: __dirname,
+  URL_PORT: port,
+  URL_PATH: process.env.URL_PATH || 'http://localhost',
+  BASE_VERSION: 'v2',
+  CONTROLLER_DIRECTORY: join(__dirname, 'controllers'),
+  PROJECT_DIR: __dirname,
+  BACKEND_TIMEOUT: timeout,
+  LOG_LEVEL: process.env.LOG_LEVEL || 'info',
+  LOG_FILE: process.env.LOG_FILE || null,
+  LOG_FILE_LEVEL: process.env.LOG_FILE_LEVEL || 'error',
+  XDEBUG_ENABLE: process.env.XDEBUG_ENABLE || false,
+  VALIDATE_RESPONSE: process.env.VALIDATE_RESPONSE || false,
+}
+config.OPENAPI_YAML = join(config.ROOT_DIR, 'api', 'openapi.yaml')
+config.FULL_PATH = `${config.URL_PATH}:${config.URL_PORT}/${config.BASE_VERSION}`
+config.FILE_UPLOAD_PATH = join(config.PROJECT_DIR, 'uploaded_files')
+
+// Allow local overrides
+import local_config from './local_config.js'
+Object.assign(config, local_config)
+
+export default config

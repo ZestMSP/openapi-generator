@@ -1,0 +1,54 @@
+import http from 'http'
+import fs from 'fs'
+import {dirname, join, resolve} from 'path'
+import swaggerUI from 'swagger-ui-express'
+import jsYaml from 'js-yaml'
+import express from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import OpenApiValidator from 'express-openapi-validator'
+import logger from './logger.js'
+import config from './config.js'
+import {__dirname} from './config.js'
+import {router as api_router} from './router.js'
+
+
+class ExpressServer {
+  constructor(port) {
+    this.port = port
+    this.app = express()
+    this.setupMiddleware()
+  }
+
+  setupMiddleware() {
+    // this.setupAllowedMedia()
+    this.app.use(cors())
+    this.app.use(bodyParser.json({limit: '14MB'}))
+    this.app.use(express.json())
+    this.app.use(express.urlencoded({extended: false}))
+    this.app.use(cookieParser())
+
+    this.app.use('/api/v1', api_router)
+
+    if (process.env.NODE_ENV != 'production') {
+      //this.app.get('/mock_on', mockOn)
+      //this.app.get('/mock_off', mockOff)
+    }
+  }
+
+  launch() {
+    http.createServer(this.app).listen(this.port)
+    logger.info(`Listening on port ${this.port}`)
+  }
+
+
+  async close() {
+    if (this.server !== undefined) {
+      await this.server.close()
+      logger.info(`Server on port ${this.port} shut down`)
+    }
+  }
+}
+
+export default ExpressServer
