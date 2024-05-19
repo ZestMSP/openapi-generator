@@ -202,7 +202,7 @@ public class NodejsExpressServerEsmGenerator extends DefaultCodegen implements C
     supportingFiles.add(new SupportingFile("expressServer.mustache", "src", "expressServer.js"));
     supportingFiles.add(new SupportingFile("server.mustache", "src", "server.js"));
     supportingFiles.add(new SupportingFile("logger.mustache", "src", "logger.js"));
-    supportingFiles.add(new SupportingFile("eslintrc.mustache", "", ".eslintrc.json"));
+    supportingFiles.add(new SupportingFile("eslint.config.mustache", "", "eslint.config.js"));
 
     // utils folder
     supportingFiles.add(new SupportingFile("utils" + File.separator + "openapiRouter.mustache", "src/utils", "openapiRouter.js"));

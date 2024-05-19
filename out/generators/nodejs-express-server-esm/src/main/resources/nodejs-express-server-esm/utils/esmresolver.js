@@ -10,11 +10,9 @@ export default function esmresolver(handlersPath, route, apiDoc) {
     const baseName = schema['x-eov-operation-handler']
 
     if (oId && !baseName) {
-        // eslint-disable-next-line max-len
         throw Error(`found x-eov-operation-id for route [${method} - ${expressRoute}]. x-eov-operation-handler required.`)
     }
     if (!oId && baseName) {
-        // eslint-disable-next-line max-len
         throw Error(`found x-eov-operation-handler for route [${method} - ${expressRoute}]. x-eov-operation-id required.`)
     }
     if (!oId && !baseName) {
@@ -31,13 +29,11 @@ export default function esmresolver(handlersPath, route, apiDoc) {
         handlersCache[modulePath]
             .then((module) => {
                 if (!module[oId]) {
-                    // eslint-disable-next-line max-len
                     throw Error(`Could not find 'x-eov-operation-handler' with id ${oId} in module '${baseName}'. Make sure operation '${oId}' defined in your API spec exists as a handler function in '${baseName}'.`)
                 }
                 return module[oId](req, res, next)
             })
             .catch(() => {
-                // eslint-disable-next-line max-len
                 next()
             })
     }

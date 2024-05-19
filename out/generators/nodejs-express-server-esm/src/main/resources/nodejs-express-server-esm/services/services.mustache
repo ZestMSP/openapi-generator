@@ -24,9 +24,9 @@ import * as api_impl from '../api_impl/index.js'
 * returns {{{returnType}}}
 {{/returnType}}
 * */
-export const {{{operationId}}} = ({headers}{{#allParams}}{{#-first}}, { {{/-first}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{#-last}} }{{/-last}}{{/allParams}}) => new Promise(
-  /* Should this be async??? */
-  async (resolve, reject) => {
+export const {{{operationId}}} = ({headers}, {{#allParams}}{{#-first}}{ {{/-first}}{{paramName}},{{#hasMore}}, {{/hasMore}}{{#-last}} }{{/-last}}{{/allParams}}) => new Promise((resolve, reject) => {
+    /* Do not use an async function in the promise, but we can define one here */
+    const execApi = async () => {
     try {
       let params = {
         {{#allParams}}
@@ -42,6 +42,9 @@ export const {{{operationId}}} = ({headers}{{#allParams}}{{#-first}}, { {{/-firs
         e.code || e.status || 405,
       ))
     }
+    }
+    /* Call the async function now, which can use await */
+    execApi()
   },
 )
 {{/operation}}
