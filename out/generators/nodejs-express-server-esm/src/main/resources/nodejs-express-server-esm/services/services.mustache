@@ -8,45 +8,44 @@ import * as api_impl from '../api_impl/index.js'
 {{#operation}}
 /**
 {{#summary}}
-* {{{summary}}}
+    * {{{summary}}}
 {{/summary}}
 {{#notes}}
-* {{{notes}}}
+    * {{{notes}}}
 {{/notes}}
-*
+    *
+    * @param (Object) request_params - The request params for this operation
 {{#allParams}}
-* {{paramName}} {{{dataType}}} {{{description}}}{{^required}} (optional){{/required}}
+    * @param ({{dataType}}) request_params.{{paramName}} - {{{description}}}{{^required}} (optional){{/required}}
 {{/allParams}}
+    *
 {{^returnType}}
-* no response value expected for this operation
+    * no response value expected for this operation
 {{/returnType}}
 {{#returnType}}
-* returns {{{returnType}}}
+    * returns {{{returnType}}}
 {{/returnType}}
-* */
-export const {{{operationId}}} = ({headers}, {{#allParams}}{{#-first}}{ {{/-first}}{{paramName}},{{#hasMore}}, {{/hasMore}}{{#-last}} }{{/-last}}{{/allParams}}) => new Promise((resolve, reject) => {
+**/
+export const {{{operationId}}} = ({headers}, request_params) => new Promise((resolve, reject) => {
     /* Do not use an async function in the promise, but we can define one here */
     const execApi = async () => {
-    try {
-      let params = {
-        {{#allParams}}
-            {{paramName}},
-        {{/allParams}}
-            headers
-      }
-      let response = await api_impl.{{operationId}}(params)
-      resolve(Service.successResponse(response.payload, response.code))
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.error || e.message || e.payload || 'Invalid API Input',
-        e.code || e.status || 405,
-      ))
-    }
+        try {
+            let params = {
+                ...request_params,
+                headers
+            }
+            let response = await api_impl.{{operationId}}(params)
+            resolve(Service.successResponse(response.payload, response.code))
+        } catch (e) {
+            reject(Service.rejectResponse(
+                e.error || e.message || e.payload || 'Invalid API Input',
+                e.code || e.status || 405,
+            ))
+        }
     }
     /* Call the async function now, which can use await */
     execApi()
-  },
-)
+})
 {{/operation}}
 {{/operations}}
 

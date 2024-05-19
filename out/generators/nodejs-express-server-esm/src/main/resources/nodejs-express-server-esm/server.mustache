@@ -2,16 +2,14 @@ import config from './config.js'
 import logger from './logger.js'
 import ExpressServer from './expressServer.js'
 
-// Import these for debug purposes.
-// Importing them here tests the import chain
-import * as controllers from './controllers/index.js'
-import * as services from './services/index.js'
-
 logger.info(`Starting API Server, version ${config.VERSION}`)
+logger.info(`Configured to run on ${config.URL_PATH}:${config.URL_PORT}`)
+logger.info(`Zest backend url is ${config.ZEST_BACKEND_URL}`)
 
 try {
     require('./local_index')
-} catch (e) {
+} catch (e) { // eslint-disable-line no-unused-vars
+    // Intentionally Blank
 }
 
 const launchServer = async () => {

@@ -1,16 +1,9 @@
 import http from 'http'
-import fs from 'fs'
-import {dirname, join, resolve} from 'path'
-import swaggerUI from 'swagger-ui-express'
-import jsYaml from 'js-yaml'
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-import OpenApiValidator from 'express-openapi-validator'
 import logger from './logger.js'
-import config from './config.js'
-import {__dirname} from './config.js'
 import {router as api_router} from './router.js'
 
 
